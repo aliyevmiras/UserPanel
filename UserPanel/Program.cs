@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using UserPanel.Models;
+using UserPanel.Models.Data;
+
 namespace UserPanel
 {
 	public class Program
@@ -7,8 +11,9 @@ namespace UserPanel
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
+			builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationContext")));
 			builder.Services.AddControllersWithViews();
-
+			
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
@@ -25,6 +30,8 @@ namespace UserPanel
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
+
+			SeedData.EnsurePopulated(app.Services);
 
 			app.Run();
 		}
