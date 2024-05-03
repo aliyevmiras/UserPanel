@@ -17,7 +17,7 @@ namespace UserPanel.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			return View(_db.Users);
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
