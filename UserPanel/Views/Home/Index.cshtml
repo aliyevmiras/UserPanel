@@ -8,21 +8,28 @@
     <h1 class="display-4">User manager</h1>
 </div>
 
-<table>
-    <tr>
-        <th>GUID</th>
-        <th>Email</th>
-        <th>Registration date</th>
-        <th>Last login date</th>
-    </tr>
-    @foreach(var user in Model)
-    {
+<table class="table table-hover">
+    <caption>List of existing users</caption>
+    <thead>
         <tr>
-            <td>@user.Id</td>
-            <td>@user.Email</td>
-            <td>@user.RegDate</td>
-            <td>@(user.LastLoginDate == null ? "null" : user.LastLoginDate)</td>
+            <th scope="col"><input type="checkbox"></th>
+            <th scope="col">GUID</th>
+            <th scope="col">Email</th>
+            <th scope="col">Registration date</th>
+            <th scope="col">Last login date</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach(var user in Model)
+        {
+            <tr>
+                <th scope="row"><input type="checkbox"></th>
+                <td>@user.Id</td>
+                <td>@user.Email</td>
+                <td>@user.RegDate</td>
+                <td>@(user.LastLoginDate == null ? "null" : user.LastLoginDate)</td>
+            </tr>
+        }
+    </tbody>
 </table>
 
