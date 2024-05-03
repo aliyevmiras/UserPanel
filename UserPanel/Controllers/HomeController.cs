@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using UserPanel.Models;
@@ -7,7 +8,7 @@ namespace UserPanel.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-		private ApplicationContext _db;
+		private readonly ApplicationContext _db;
 		public HomeController(ILogger<HomeController> logger, ApplicationContext db)
 		{
 			_logger = logger;
