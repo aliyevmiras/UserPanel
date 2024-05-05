@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserPanel.Models;
 using UserPanel.Models.Data;
@@ -12,7 +13,8 @@ namespace UserPanel
 
 			// Add services to the container.
 			builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationContext")));
-			builder.Services.AddControllersWithViews();
+            builder.Services.AddIdentity<User, IdentityRole<Guid>>().AddEntityFrameworkStores<ApplicationContext>();
+            builder.Services.AddControllersWithViews();
 			
 			var app = builder.Build();
 

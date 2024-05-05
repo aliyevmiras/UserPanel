@@ -24,6 +24,11 @@ namespace UserPanel.Controllers
         {
             Debug.WriteLine($"User email: {user.Email}");
             Debug.WriteLine($"User password: {user.Password}");
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 

@@ -13,7 +13,7 @@ namespace UserPanel.Models
 		// [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime RegDate { get; set; } = DateTime.UtcNow;
 
-		[Required]
+		[Required(ErrorMessage = "You forgot to type the password")]
 		[DataType(DataType.Password)]
 		public required string Password { get; set; }
 

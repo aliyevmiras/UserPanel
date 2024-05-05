@@ -1,16 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace UserPanel.Models
 {
-	public class ApplicationContext : DbContext
+	public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 	{
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
+			//Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
-        public DbSet<User> Users { get; set; }
+        //public override DbSet<User> Users { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
