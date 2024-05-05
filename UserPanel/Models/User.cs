@@ -13,9 +13,18 @@ namespace UserPanel.Models
 		// [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime RegDate { get; set; } = DateTime.UtcNow;
 
-		[Required(ErrorMessage = "You forgot to type the password")]
+		[Required(ErrorMessage = "Please provide a valid password")]
 		[DataType(DataType.Password)]
-		public required string Password { get; set; }
+        [Display(Prompt = "Must have at least 1 character")]
+
+        public required string Password { get; set; }
+
+		[Required(ErrorMessage = "Please provide a valid email address")]
+        [EmailAddress(ErrorMessage = "Please provide a valid email address")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Prompt = "johndoe@xxxxx.xxx")]
+        public required string Email {  get; set; }
+
 
 		// using event to fire handler
 		public DateTime? LastLoginDate { get; set; }

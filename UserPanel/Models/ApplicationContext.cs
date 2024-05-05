@@ -9,7 +9,6 @@ namespace UserPanel.Models
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-			//Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -33,7 +32,9 @@ namespace UserPanel.Models
 			modelBuilder.Entity<User>().Ignore(x => x.PasswordHash);
 			modelBuilder.Entity<User>().Ignore(x => x.PhoneNumber);
 			modelBuilder.Entity<User>().Ignore(x => x.PhoneNumberConfirmed);
-		}
+
+            modelBuilder.Entity<User>().Ignore(x => x.Email);
+        }
 
 	}
 }
