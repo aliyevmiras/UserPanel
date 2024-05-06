@@ -13,7 +13,6 @@ namespace UserPanel.Models
         [Required(ErrorMessage = "Please provide a valid password")]
         [DataType(DataType.Password)]
         [Display(Prompt = "Must have at least 1 character")]
-
         public required string Password { get; set; }
     }
 }

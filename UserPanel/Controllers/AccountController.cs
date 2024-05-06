@@ -36,7 +36,7 @@ namespace UserPanel.Controllers
             }
 
 
-            //var userFound = _userManager.Users.Where(u => u.Email == user.Email).FirstOrDefault();
+            //var userFound = _userManager.Users.Where(u => u.EmailAddress == user.Email).FirstOrDefault();
 
             //if(userFound != null && userFound.Password == user.Password)
             //{

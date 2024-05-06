@@ -16,14 +16,13 @@ namespace UserPanel.Models
 		[Required(ErrorMessage = "Please provide a valid password")]
 		[DataType(DataType.Password)]
         [Display(Prompt = "Must have at least 1 character")]
-
         public required string Password { get; set; }
 
 		[Required(ErrorMessage = "Please provide a valid email address")]
         [EmailAddress(ErrorMessage = "Please provide a valid email address")]
         [DataType(DataType.EmailAddress)]
         [Display(Prompt = "johndoe@xxxxx.xxx")]
-        public required string Email {  get; set; }
+        public required string EmailAddress { get; set; }
 
 
 		// using event to fire handler
