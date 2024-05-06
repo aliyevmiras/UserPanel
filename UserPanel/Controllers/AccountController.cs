@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 using UserPanel.Models;
 
 namespace UserPanel.Controllers
@@ -23,14 +25,23 @@ namespace UserPanel.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(User user)
+        public IActionResult Login(LoginViewModel user)
         {
             Debug.WriteLine($"User email: {user.Email}");
             Debug.WriteLine($"User password: {user.Password}");
-            if (ModelState.IsValid)
+
+            if(!ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Home");
+                return View(user);
             }
+
+
+            //var userFound = _userManager.Users.Where(u => u.Email == user.Email).FirstOrDefault();
+
+            //if(userFound != null && userFound.Password == user.Password)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
             return View();
         }
