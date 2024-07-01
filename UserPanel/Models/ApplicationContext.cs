@@ -18,6 +18,8 @@ namespace UserPanel.Models
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>().Property(u => u.Email).IsRequired();
         }
 
 	}
