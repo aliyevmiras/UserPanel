@@ -11,7 +11,7 @@ namespace UserPanel.Models
 		// TODO: change names according to db conventions: camel-case or hyphen-case
 
 		// [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public DateTime RegDate { get; set; } = DateTime.UtcNow;
+		public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
 
 		[Required(ErrorMessage = "Please provide a valid password")]
 		[DataType(DataType.Password)]
