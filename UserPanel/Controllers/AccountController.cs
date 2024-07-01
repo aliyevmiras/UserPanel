@@ -36,12 +36,12 @@ namespace UserPanel.Controllers
             }
 
 
-            var userFound = _userManager.Users.Where(u => u.EmailAddress == user.Email).FirstOrDefault();
+            //var userFound = _userManager.Users.Where(u => u.Email == user.Email).FirstOrDefault();
 
-            if (userFound != null && userFound.Password == user.Password)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //if (userFound != null && userFound.PasswordHash == user.Password)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
             return View();
         }
