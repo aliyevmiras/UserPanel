@@ -5,11 +5,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserPanel.Models
 {
+	public enum UserStatus
+	{
+		Active,
+		Blocked
+	}
+
 	public class User : IdentityUser<Guid>
 	{
 		public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
 
 		public DateTime LastLoginDate { get; set; }
+
+		public UserStatus Status { get; set; } = UserStatus.Active;
 
 	}
 }
