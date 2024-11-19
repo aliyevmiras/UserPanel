@@ -62,6 +62,24 @@ namespace UserPanel.Controllers
                 return View(newUser);
             }
 
+            var isEmailTaken = await _userManager.FindByEmailAsync(newUser.Email);
+            var isUsernameTaken = await _userManager.FindByNameAsync(newUser.UserName);
+
+            if(isEmailTaken != null)
+            {
+                ModelState.AddModelError("Email", "The email address you entered is already associated with another account. Please try logging in or use a different email address.");
+            }
+
+            if(isUsernameTaken != null)
+            {
+                ModelState.AddModelError("UserName", "The username you entered is already associated with another account. Please try logging in or use a different username.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(newUser);
+            }
+
             User user = new User() { UserName = newUser.UserName, Email = newUser.Email };
             var signupResult = await _userManager.CreateAsync(user, newUser.Password);
 

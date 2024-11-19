@@ -17,7 +17,10 @@ namespace UserPanel.Models
 			base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>().Property(u => u.Email).IsRequired();
+			modelBuilder.Entity<User>().HasIndex(u => u.UserName).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+
         }
 
-	}
+    }
 }
