@@ -12,10 +12,12 @@ namespace UserPanel.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<User> _userManager;
-        public AccountController(ILogger<HomeController> logger, UserManager<User> userManager)
+        private readonly SignInManager<User> _signinManager;
+        public AccountController(ILogger<HomeController> logger, UserManager<User> userManager, SignInManager<User> signinManager)
         {
             _logger = logger;
             _userManager = userManager;
+            _signinManager = signinManager;
         }
 
         [HttpGet]
@@ -53,20 +55,30 @@ namespace UserPanel.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel newUser)
+        public async Task<IActionResult>  Register(RegisterViewModel newUser)
         {
-            Debug.WriteLine($"User email: {newUser.Email}");
-            Debug.WriteLine($"Username: {newUser.UserName}");
-            Debug.WriteLine($"User password: {newUser.Password}");
-
             if (!ModelState.IsValid)
             {
                 return View(newUser);
             }
 
-            // Register logic
+            User user = new User() { UserName = newUser.UserName, Email = newUser.Email };
+            var signupResult = await _userManager.CreateAsync(user, newUser.Password);
 
-            return View();
+            if (!signupResult.Succeeded)
+            {
+                foreach (var error in signupResult.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return View(newUser);
+            }
+
+            await _signinManager.SignInAsync(user, isPersistent: false);
+
+            // Update last login date?
+
+            return RedirectToAction("Index", "Home");
         }
 
     }
