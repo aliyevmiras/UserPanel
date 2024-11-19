@@ -15,9 +15,9 @@ namespace UserPanel.Models
 	{
 		public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
 
-		public DateTime LastLoginDate { get; set; }
+		public DateTime LastLoginDate { get; set; } = DateTime.UtcNow;
 
-		public UserStatus Status { get; set; } = UserStatus.Active;
+        public UserStatus Status { get; set; } = UserStatus.Active;
 
 	}
 }
