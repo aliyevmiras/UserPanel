@@ -6,14 +6,11 @@ namespace UserPanel.Models
 {
 	public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 	{
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
 			//Database.EnsureDeleted();
             Database.EnsureCreated();
         }
-
-        //public override DbSet<User> Users { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

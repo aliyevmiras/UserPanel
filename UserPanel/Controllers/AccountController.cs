@@ -46,5 +46,28 @@ namespace UserPanel.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(RegisterViewModel newUser)
+        {
+            Debug.WriteLine($"User email: {newUser.Email}");
+            Debug.WriteLine($"Username: {newUser.UserName}");
+            Debug.WriteLine($"User password: {newUser.Password}");
+
+            if (!ModelState.IsValid)
+            {
+                return View(newUser);
+            }
+
+            // Register logic
+
+            return View();
+        }
+
     }
 }
