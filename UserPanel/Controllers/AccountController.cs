@@ -27,25 +27,43 @@ namespace UserPanel.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel user)
+        public async Task<IActionResult> Login(LoginViewModel user)
         {
-            Debug.WriteLine($"User email: {user.Email}");
-            Debug.WriteLine($"User password: {user.Password}");
-
             if(!ModelState.IsValid)
             {
                 return View(user);
             }
 
+            var userFound = await _userManager.FindByEmailAsync(user.Email);
 
-            //var userFound = _userManager.Users.Where(u => u.Email == user.Email).FirstOrDefault();
+            if(userFound == null)
+            {
+                ModelState.AddModelError("Email or password", "The email address or password you entered is incorrect. Please try again, or use the \"Forgot Password\" link to reset your password.");
+            }
 
-            //if (userFound != null && userFound.PasswordHash == user.Password)
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
+            var signinResult = await _signinManager.PasswordSignInAsync(userFound.UserName, user.Password, true, false);
+
+            if (!signinResult.Succeeded)
+            {
+                ModelState.AddModelError("Email or password", "The email address or password you entered is incorrect. Please try again, or use the \"Forgot Password\" link to reset your password.");
+                return View(user);
+            }
+
+
+            // TODO: check fail cases on https://stackoverflow.com/questions/52363319/net-core-identity-getting-meaningful-login-failed-reason
+
+            //if (!signinResult.Succeeded)
             //{
-            //    return RedirectToAction("Index", "Home");
+            //    ModelState.TryAddModelError(error.Code, error.Description);
+            //    return View(user);
             //}
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -55,7 +73,7 @@ namespace UserPanel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult>  Register(RegisterViewModel newUser)
+        public async Task<IActionResult> Register(RegisterViewModel newUser)
         {
             if (!ModelState.IsValid)
             {
@@ -94,7 +112,7 @@ namespace UserPanel.Controllers
 
             await _signinManager.SignInAsync(user, isPersistent: false);
 
-            // Update last login date?
+            // TODO: add updating the last login date
 
             return RedirectToAction("Index", "Home");
         }
