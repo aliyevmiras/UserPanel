@@ -4,27 +4,54 @@ using System.Runtime.CompilerServices;
 
 namespace UserPanel.Models.Data
 {
-	public static class SeedData
-	{
-		public static void EnsurePopulated(IServiceProvider services)
-		{
-			using(var scope = services.CreateScope())
-			{
-				ApplicationContext context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-				//if (!context.Users.Any())
-				//{
-				//	context.Users.AddRange(
-				//		new User { EmailAddress = "nonexisting1@gmail.com", Password = "123"},
-				//		new User { EmailAddress = "nonexisting2@gmail.com", Password = "123" },
-				//		new User { EmailAddress = "nonexisting3@gmail.com", Password = "123" },
-				//		new User { EmailAddress = "nonexisting4@gmail.com", Password = "123" },
-				//		new User { EmailAddress = "nonexisting5@gmail.com", Password = "123" }
-				//		);
-				//	context.SaveChanges();
-				//}
-			}
-			
+    public static class SeedData
+    {
+        public async static Task EnsurePopulated(IServiceProvider services)
+        {
+            using (var scope = services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-		}
-	}
+
+                // Seed roles
+                if (!roleManager.Roles.Any())
+                {
+                    await roleManager.CreateAsync(new IdentityRole<Guid>("Administrator"));
+                    await roleManager.CreateAsync(new IdentityRole<Guid>("User"));
+                }
+
+                // Seed users with hashed password
+                if (!userManager.Users.Any())
+                {
+                    var users = new[]
+                    {
+                        new User { UserName = "admin", Email = "admin@example.com", RegistrationDate = DateTime.UtcNow },
+                        new User { UserName = "user1", Email = "user1@example.com", RegistrationDate = DateTime.UtcNow },
+                        new User { UserName = "user2", Email = "user2@example.com", RegistrationDate = DateTime.UtcNow }
+                    };
+
+                    foreach (var user in users)
+                    {
+                        var result = await userManager.CreateAsync(user, "defaultPassword123@kz");
+                        if (result.Succeeded)
+                        {
+                            if (user.UserName == "admin")
+                            {
+                                await userManager.AddToRoleAsync(user, "Administrator");
+                            }
+                            else
+                            {
+                                await userManager.AddToRoleAsync(user, "User");
+                            }
+                        }
+                    }
+
+                }
+
+
+            }
+        }
+    }
 }
