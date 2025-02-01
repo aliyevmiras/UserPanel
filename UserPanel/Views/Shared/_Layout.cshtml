@@ -27,7 +27,9 @@
                         <li class="nav-item">
                             @if(User.Identity.IsAuthenticated)
                             {
-                                <p>Hello, <a asp-controller="Account" asp-action="Info">@User.Identity.Name</a> <form asp-controller="Account" asp-action="Logout"><button type="submit" class="btn btn-outline-secondary btn-sm">Log out</button></form></p>
+                                <p>Hello, <a asp-controller="Account" asp-action="Info" asp-route-userName="@User.Identity.Name">@User.Identity.Name</a> <form asp-controller="Account" asp-action="Logout"><button type="submit" class="btn btn-outline-secondary btn-sm">Log out</button></form>
+
+                                </p>
                             }
                             else
                             {

@@ -13,6 +13,7 @@ namespace UserPanel.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signinManager;
+
         public AccountController(ILogger<HomeController> logger, UserManager<User> userManager, SignInManager<User> signinManager)
         {
             _logger = logger;
@@ -124,5 +125,24 @@ namespace UserPanel.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public async Task<IActionResult> Info(string userName)
+        {
+            // TODO: rewrite this method using as argument the userId instead of the username although username is unique too. 
+
+            var user = await _userManager.FindByNameAsync(userName);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var userinfo = new UserInfoViewModel()
+            {
+                Email = user.Email,
+                UserName = user.UserName,
+                RegistrationDate = user.RegistrationDate,
+                LastLoginDate = user.LastLoginDate,
+                Status = user.Status,
+                Roles = roles.ToArray()
+            };
+
+            return View(userinfo);
+        }
     }
 }

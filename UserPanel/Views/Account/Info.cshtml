@@ -1,0 +1,17 @@
+﻿@model UserInfoViewModel
+@{
+    ViewData["Title"] = "User info page";
+}
+
+<h1>User info</h1>
+
+<p>Username: @Model.UserName</p>
+<p>Email: @Model.Email</p>
+<p>Registration date: @Model.RegistrationDate</p>
+<p>Role: @Model.LastLoginDate</p>
+<p>Status: @Model.Status</p>
+<p>Roles:</p>
+@foreach (var role in Model.Roles)
+{
+    <p>@role</p>
+}
