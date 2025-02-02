@@ -63,4 +63,30 @@ document.getElementById('unblockBtn').addEventListener('click', function () {
     });
 });
 
+document.getElementById('deleteBtn').addEventListener('click', function () {
+    let checkboxes = document.querySelectorAll('.checkbox');
+    let checkedUsers = [];
+
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            checkedUsers.push(checkbox.value);
+        }
+    });
+
+    fetch('/Account/Delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(checkedUsers)
+    }).then(response => {
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Failed to delete users');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+});
 

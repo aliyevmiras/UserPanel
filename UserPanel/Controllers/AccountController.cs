@@ -186,5 +186,23 @@ namespace UserPanel.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromBody] string[] userIds)
+        {
+            foreach (var id in userIds)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                await _userManager.DeleteAsync(user);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
     }
 }
