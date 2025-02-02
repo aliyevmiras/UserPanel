@@ -12,7 +12,7 @@
     <caption>List of existing users</caption>
     <thead>
         <tr>
-            <th scope="col"><input type="checkbox"></th>
+            <th scope="col"><input type="checkbox" id="selectAllCheckbox"></th>
             <th scope="col">GUID</th>
             <th scope="col">Email</th>
             <th scope="col">Registration date</th>
@@ -23,7 +23,7 @@
         @foreach(var user in Model)
         {
             <tr>
-                <th scope="row"><input type="checkbox"></th>
+                <th scope="row"><input type="checkbox" class="checkbox"></th>
                 <td>@user.Id</td>
                 <td>@user.Email</td>
                 <td>@user.RegistrationDate</td>
