@@ -36,3 +36,31 @@ document.getElementById('blockBtn').addEventListener('click', function () {
 });
 
 
+document.getElementById('unblockBtn').addEventListener('click', function () {
+    let checkboxes = document.querySelectorAll('.checkbox');
+    let checkedUsers = [];
+
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            checkedUsers.push(checkbox.value);
+        }
+    });
+
+    fetch('/Account/Unblock', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(checkedUsers)
+    }).then(response => {
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Failed to unblock users');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+

@@ -168,5 +168,23 @@ namespace UserPanel.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Unblock([FromBody] string[] userIds)
+        {
+            foreach (var id in userIds)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                user.Status = UserStatus.Active;
+                await _userManager.UpdateAsync(user);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }
