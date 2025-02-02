@@ -58,6 +58,9 @@ namespace UserPanel.Controllers
                 return View(user);
             }
 
+            userFound.LastLoginDate = DateTime.UtcNow;
+            await _userManager.UpdateAsync(userFound);
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -124,10 +127,7 @@ namespace UserPanel.Controllers
 
             var roleResult = await _userManager.AddToRoleAsync(user, defaultRole.Name);
 
-
             await _signinManager.SignInAsync(user, isPersistent: false);
-
-            // TODO: add updating the last login date
 
             return RedirectToAction("Index", "Home");
         }
