@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using System.Diagnostics;
 using System.Security.Claims;
 using UserPanel.Models;
@@ -13,12 +14,14 @@ namespace UserPanel.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signinManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
-        public AccountController(ILogger<HomeController> logger, UserManager<User> userManager, SignInManager<User> signinManager)
+        public AccountController(ILogger<HomeController> logger, UserManager<User> userManager, SignInManager<User> signinManager, RoleManager<IdentityRole<Guid>> roleManager)
         {
             _logger = logger;
             _userManager = userManager;
             _signinManager = signinManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -54,15 +57,6 @@ namespace UserPanel.Controllers
                 ModelState.AddModelError("Email or password", "The email address or password you entered is incorrect. Please try again, or use the \"Forgot Password\" link to reset your password.");
                 return View(user);
             }
-
-           
-            // TODO: check fail cases on https://stackoverflow.com/questions/52363319/net-core-identity-getting-meaningful-login-failed-reason
-
-            //if (!signinResult.Succeeded)
-            //{
-            //    ModelState.TryAddModelError(error.Code, error.Description);
-            //    return View(user);
-            //}
 
             return RedirectToAction("Index", "Home");
         }
@@ -109,6 +103,7 @@ namespace UserPanel.Controllers
             User user = new User() { UserName = newUser.UserName, Email = newUser.Email };
             var signupResult = await _userManager.CreateAsync(user, newUser.Password);
 
+
             if (!signupResult.Succeeded)
             {
                 foreach (var error in signupResult.Errors)
@@ -117,6 +112,18 @@ namespace UserPanel.Controllers
                 }
                 return View(newUser);
             }
+
+            var defaultRole = await _roleManager.FindByNameAsync("User");
+
+            if (defaultRole == null)
+            {
+                // TODO: add logging to this error because we don't want to expose error about missing default role in the view
+                ModelState.AddModelError(string.Empty, "An error occurred while creating your account. Please try again later.");
+                return View(newUser);
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(user, defaultRole.Name);
+
 
             await _signinManager.SignInAsync(user, isPersistent: false);
 
