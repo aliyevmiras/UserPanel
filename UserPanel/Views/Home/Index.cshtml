@@ -27,7 +27,7 @@
     <tbody>
         @foreach(var user in Model)
         {
-            <tr>
+            <tr class="@(user.Status == UserStatus.Blocked ?"opacity-50" : "")">
                 <th scope="row"><input type="checkbox" class="checkbox" value="@user.Id"></th>
                 <td>@user.Id</td>
                 <td>@user.Email</td>
