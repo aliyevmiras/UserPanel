@@ -55,7 +55,7 @@ namespace UserPanel.Controllers
                 return View(user);
             }
 
-
+           
             // TODO: check fail cases on https://stackoverflow.com/questions/52363319/net-core-identity-getting-meaningful-login-failed-reason
 
             //if (!signinResult.Succeeded)
