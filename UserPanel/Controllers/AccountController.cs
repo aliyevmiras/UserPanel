@@ -33,14 +33,14 @@ namespace UserPanel.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel user)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(user);
             }
 
             var userFound = await _userManager.FindByEmailAsync(user.Email);
 
-            if(userFound == null)
+            if (userFound == null)
             {
                 ModelState.AddModelError("Email or password", "The email address or password you entered is incorrect. Please try again, or use the \"Forgot Password\" link to reset your password.");
             }
@@ -88,12 +88,12 @@ namespace UserPanel.Controllers
             var isEmailTaken = await _userManager.FindByEmailAsync(newUser.Email);
             var isUsernameTaken = await _userManager.FindByNameAsync(newUser.UserName);
 
-            if(isEmailTaken != null)
+            if (isEmailTaken != null)
             {
                 ModelState.AddModelError("Email", "The email address you entered is already associated with another account. Please try logging in or use a different email address.");
             }
 
-            if(isUsernameTaken != null)
+            if (isUsernameTaken != null)
             {
                 ModelState.AddModelError("UserName", "The username you entered is already associated with another account. Please try logging in or use a different username.");
             }
@@ -150,6 +150,23 @@ namespace UserPanel.Controllers
             };
 
             return View(userinfo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Block([FromBody] string[] userIds)
+        {
+            foreach (var id in userIds)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                user.Status = UserStatus.Blocked;
+                await _userManager.UpdateAsync(user);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

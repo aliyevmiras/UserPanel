@@ -8,6 +8,10 @@
     <h1 class="display-4">User manager</h1>
 </div>
 
+<div class="toolbar">
+    <button id="blockBtn" type="button" class="btn btn-secondary">Block</button>
+</div>
+
 <table class="table table-hover">
     <caption>List of existing users</caption>
     <thead>
@@ -23,7 +27,7 @@
         @foreach(var user in Model)
         {
             <tr>
-                <th scope="row"><input type="checkbox" class="checkbox"></th>
+                <th scope="row"><input type="checkbox" class="checkbox" value="@user.Id"></th>
                 <td>@user.Id</td>
                 <td>@user.Email</td>
                 <td>@user.RegistrationDate</td>
