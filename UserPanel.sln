@@ -5,8 +5,6 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserPanel", "UserPanel\UserPanel.csproj", "{56BBE665-069E-4737-862D-376C10720E1C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionsHub", "..\CollectionsHub\CollectionsHub\CollectionsHub.csproj", "{C9C2250B-6CC5-4CFC-B632-73AD040F9CB4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{56BBE665-069E-4737-862D-376C10720E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56BBE665-069E-4737-862D-376C10720E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56BBE665-069E-4737-862D-376C10720E1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9C2250B-6CC5-4CFC-B632-73AD040F9CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9C2250B-6CC5-4CFC-B632-73AD040F9CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9C2250B-6CC5-4CFC-B632-73AD040F9CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9C2250B-6CC5-4CFC-B632-73AD040F9CB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
