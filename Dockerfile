@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Копируем CSPROJ и восстанавливаем зависимости
-COPY *.csproj ./
+COPY UserPanel/*.csproj ./
 RUN dotnet restore
 
 # Копируем весь проект и публикуем
@@ -11,7 +11,7 @@ COPY . ./
 RUN dotnet publish -c Release -o /app/publish
 
 # ===== 2. Runtime stage =====
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
 # Копируем собранное приложение из build stage
