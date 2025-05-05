@@ -2,23 +2,27 @@ name: DevSecOps CI/CD Pipeline
 
 on:
   push:
-    branches: '**'
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
   sast:
-    name: SonarQube Scan
-    uses: sonarsource/sonarqube-scan-action@v1.1.0
-    with:
-      args: >
-        -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-        -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    name: Static Code Analysis (SAST) with SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v1.1.0
+        with:
+          args: >
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build:
     name: Build and Deploy App
@@ -30,10 +34,14 @@ jobs:
 
       - name: Build app
         run: |
-          echo "Run your build here (npm install, dotnet build, etc)"
+          echo "🔧 Run your build here (npm install, dotnet build, etc)"
+          # Example for Node.js:
+          # npm install
+          # npm run build
 
       - name: Deploy to Docker (Localhost for testing)
         run: |
+          echo "🐳 Building Docker image and running container"
           docker build -t insecure-app .
           docker run -d -p 8080:80 --name test-app insecure-app
 
@@ -41,15 +49,14 @@ jobs:
     name: DAST Scan with OWASP ZAP
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Wait for App to be ready (e.g., on localhost:8080)
         run: |
-          echo "Waiting for app to start..."
-          sleep 20  # или использовать curl в цикле для проверки готовности
+          echo "⏳ Waiting for the app to be ready..."
+          sleep 20
 
       - name: Run OWASP ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.9.0
