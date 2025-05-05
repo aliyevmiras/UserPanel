@@ -8,14 +8,20 @@ on:
 
 jobs:
   sast:
-  - name: SonarQube Scan
-    uses: sonarsource/sonarqube-scan-action@v1.1.0
-    with:
-      args: >
-        -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-        -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-        -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+    name: Static Code Analysis (SAST) with SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v1.1.0
+        with:
+          args: >
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
   build:
     name: Build and Deploy App
