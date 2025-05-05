@@ -69,4 +69,4 @@ jobs:
         with:
           target: 'http://localhost:8080'
           fail_action: false
-          docker_name: 'ghcr.io/zaproxy/zap-baseline'
+          docker_name: 'owaspfoundation/zap-baseline'
