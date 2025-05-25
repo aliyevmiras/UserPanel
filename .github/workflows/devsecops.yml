@@ -36,9 +36,10 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
         dotnet sonarscanner begin \
-          /k:"UserPanel" \
           /o:"aliyevmiras" \
-          /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+          /k:"userpanel-project-aqa" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
 
     - name: Build (required by scanner)
       run: dotnet build
@@ -46,4 +47,4 @@ jobs:
     - name: End SonarCloud analysis
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
