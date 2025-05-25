@@ -1,21 +1,23 @@
-name: SonarQube Analysis
+name: SonarCloud Analysis
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
 jobs:
-  analyze:
-    name: Analyze with SonarQube
+  build:
+    name: Build and analyze on SonarCloud
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source code
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Setup .NET SDK
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
@@ -23,24 +25,25 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build project
+    - name: Build
       run: dotnet build --no-restore
-
-    - name: Install reportgenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
     - name: Install SonarScanner
       run: dotnet tool install --global dotnet-sonarscanner
 
-    - name: Run SonarQube Analysis
+    - name: Begin SonarCloud analysis
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
         dotnet sonarscanner begin \
           /k:"UserPanel" \
-          /d:sonar.host.url="http://localhost:9000" \
-          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          /o:"aliyevmiras" \
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
 
-        dotnet build
+    - name: Build (required by scanner)
+      run: dotnet build
 
-        dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+    - name: End SonarCloud analysis
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
